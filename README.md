@@ -19,7 +19,7 @@ Just hand over the required arguments to the script and enjoy the show:
 # -k Your TOTP key / secret (can be extracted from QR codes)
 # -h help
 
-python3 -d 6 -k HIWSCG5ZZFOTLBJUN5RG6U3YKJ3XMY -a sha1
+python3 -d 6 -k HIWSCG5ZZFOTLBJUN5RG6U3YKJ3XMY
 # Example output
 >> 823873
 ````
