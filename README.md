@@ -15,7 +15,6 @@ Just hand over the required arguments to the script and enjoy the show:
 # Args:
 # -d How many digits your code should have (6 is the default that is used almost everywhere)
 # -k Your TOTP key / secret (can be extracted from QR codes)
-# -a Select you algorithm (sha1 is the default)
 # -h help
 
 python3 -d 6 -k HIWSCG5ZZFOTLBJUN5RG6U3YKJ3XMY -a sha1
