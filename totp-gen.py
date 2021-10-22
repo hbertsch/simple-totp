@@ -40,9 +40,9 @@ def int2beint64(i):
     return struct.pack('>Q', int(i))
 
 def dec(h,p):
-    digits =  str(truncated_value(h))
+    digits = str(truncated_value(h))
     code = str(digits)[-int(p):]
-    return code
+    return code.zfill(6)
 
 def truncated_value(h):
     v = h[-1]
@@ -56,18 +56,23 @@ def hotp(key, period=30, digits=6, digest=hashlib.sha1):
 
     t = int(time.time())
     T = int(t / period)
+    T_next = (T*period)+period
+
 
     bin_counter = int2beint64(T)
+    # In case the string is not a fully filled b64 string, we need
+    # to append '=' until it reached a valid length
+    last_block_width = len(key) % 8
+    if last_block_width != 0:
+        key += (8 - last_block_width) * '='
     bin_key = base64.b32decode(key)
-    
-    # Should be correct
+
     mac = hmac.new(bin_key, bin_counter, digest).digest()
-    return  dec(mac, digits)
+    code = dec(mac, digits)
+     # return current code + time valid left in seconds
+    return code, int(T_next-t)
 
 if __name__ == '__main__':
     getArguments(sys.argv[1:])
-    print(hotp(KEY,digits=DIGITS))
-    
-    # Only usable with 'from oath import totp'
-    #HEX_KEY = base64.b32decode(KEY).hex()
-    #print(totp(HEX_KEY,format='dec6',period=30,hash=hashlib.sha1))
+    code,timeleft = hotp(KEY,digits=DIGITS)
+    print(f"{code} | time left {timeleft}")
